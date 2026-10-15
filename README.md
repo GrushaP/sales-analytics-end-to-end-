@@ -215,12 +215,7 @@ data-warehouse-analytics-project/
 │   └── gold/
 │       └── ddl_gold.sql
 ├── analytics/
-│   ├── customer_analysis.sql
-│   ├── product_analysis.sql
 │   ├── sales_analysis.sql
-│   └── case_studies/
-│       ├── australia_vs_us.sql
-│       └── revenue_decline_recovery.sql
 ├── tests/
 │   └── data_quality_checks.sql
 ├── dashboard/
