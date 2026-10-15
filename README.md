@@ -1,9 +1,7 @@
 [README (3).md](https://github.com/user-attachments/files/33350214/README.3.md)
-# End-to-End Sales Analytics | PostgreSQL, SQL & Power BI
+# Sales Data Warehouse & Business Intelligence | PostgreSQL & Power BI
 
 > **From raw CRM/ERP data to a validated, four-page interactive analytics dashboard.** This portfolio project combines a PostgreSQL Bronze–Silver–Gold warehouse, SQL business investigation, dimensional modeling, advanced DAX, and actionable sales insights.
-
-![Power BI star schema](docs/power_bi_model.png)
 
 ## Project at a glance
 
