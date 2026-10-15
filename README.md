@@ -122,15 +122,15 @@ DATATABLE(
 Executive KPIs, Top 10 Products by Revenue, AOV by Category, Top 10 Customers by Revenue, Top 10 Customers by Orders, and Top 10 Products by Profit Margin.
 
 ### Page 2 — Geographic Insights
-![Geographic Insights](dashboard/screenshots/geographic_insights.png)
+![Geographic Insights](dashboard/screenshots/Geographic%20Insights.png)
 Interactive revenue-bubble map with bookmark toggle to country rankings, revenue by category, country profit margin and absolute profit. Geographic data is missing for approximately **1.8% of customers**, retained as N/A.
 
 ### Page 3 — Country Comparison
-![Country Comparison](dashboard/screenshots/country_comparison.png)
+![Country Comparison](dashboard/screenshots/Country%20Comparison.png)
 Independent Country A/B selectors, matching KPI panels, Top 10 Product rankings and a higher- versus lower-value product quantity-share comparison.
 
 ### Page 4 — Sales Trends & Growth
-![Sales Trends & Growth](dashboard/screenshots/sales_trends_growth.png)
+![Sales Trends & Growth](dashboard/screenshots/Sales%20Trends%20%26%20Growth.png)
 Year/month revenue trend, YoY revenue growth, category contribution to YoY change, and Units Sold vs Revenue per Unit growth drivers. A fixed historical case study summarizes the 2012 decline and 2013 recovery.
 
 ## 6. Business findings and analysis
