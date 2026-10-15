@@ -1,0 +1,167 @@
+Name,Expression,DisplayFolder
+"Total Revenue","SUM('gold fact_sales'[sales_amount])",""
+"AOV","[Total Revenue]/[Total Orders]",""
+"Total Orders","DISTINCTCOUNT('gold fact_sales'[order_number])",""
+"No of Customer","DISTINCTCOUNT('gold dim_customers'[customer_id])",""
+"no_of_ordersA","DISTINCTCOUNT('gold fact_sales'[order_number])",""
+"repeate customer","COUNTROWS(FILTER(VALUES('gold dim_customers'[customer_id]),CALCULATE(DISTINCTCOUNT('gold fact_sales'[order_number]))>1))",""
+"TOTAL PROFIT","SUMX('gold fact_sales','gold fact_sales'[sales_amount]- ('gold fact_sales'[quantity]* RELATED('gold dim_products'[product_cost])))",""
+"REVENUECNTRYA","VAR SELECTEDcOUNTRY = SELECTEDVALUE('Country A'[country]) RETURN CALCULATE([Total Revenue], TREATAS({SELECTEDcOUNTRY},'gold dim_customers'[country]))",""
+"REVENUECNTRYB","VAR selectedcontryB=SELECTEDVALUE('Country B'[country]) RETURN CALCULATE([Total Revenue],TREATAS({selectedcontryB},'gold dim_customers'[country]))",""
+"totalcustomerA","VAR selectedcountrya = SELECTEDVALUE('Country A'[country]) RETURN CALCULATE(DISTINCTCOUNT('gold dim_customers'[customer_id]),TREATAS({selectedcountrya},'gold dim_customers'[country]))",""
+"totalcustomerB","VAR selectedcountryb=SELECTEDVALUE('Country B'[country])RETURN CALCULATE(DISTINCTCOUNT('gold dim_customers'[customer_id]),TREATAS({selectedcountryb},'gold dim_customers'[country]))",""
+"AOV_A","DIVIDE([REVENUECNTRYA],[TOTALORDERSA])",""
+"AOV_B","DIVIDE([REVENUECNTRYB],[TOTALORDERSB])",""
+"TOTALORDERSA","VAR selectedcountryA=SELECTEDVALUE('Country A'[country]) RETURN CALCULATE(DISTINCTCOUNT('gold fact_sales'[order_number]),TREATAS({selectedcountryA},'gold dim_customers'[country]))",""
+"TOTALORDERSB","VAR selectedCountry=SELECTEDVALUE('Country B'[country]) RETURN CALCULATE(DISTINCTCOUNT('gold fact_sales'[order_number]),TREATAS({selectedCountry},'gold dim_customers'[country]))",""
+"Acustomers","VAR selectedcontry=SELECTEDVALUE('Country A'[country]) RETURN CALCULATE(DISTINCTCOUNT('gold dim_customers'[customer_key]),TREATAS({selectedcontry},'gold dim_customers'[country]))",""
+"Bcustomers","VAR selectedcontry=SELECTEDVALUE('Country A'[country]) RETURN CALCULATE(DISTINCTCOUNT('gold dim_customers'[customer_key]),TREATAS({selectedcontry},'gold dim_customers'[country]))",""
+"BOrderPerCustomermer","DIVIDE([TOTALORDERSB],[totalcustomerB])",""
+"AOrderPerCustomermer","DIVIDE([TOTALORDERSA],[totalcustomerA])",""
+"ATotalQuantity","VAR selectedcountry=SELECTEDVALUE('Country A'[country]) RETURN CALCULATE(SUM('gold fact_sales'[quantity]),TREATAS({selectedcountry},'gold dim_customers'[country]))",""
+"BTotalQuantity","VAR selectedcountry=SELECTEDVALUE('Country B'[country])RETURN CALCULATE(SUM('gold fact_sales'[quantity]),TREATAS({selectedcountry},'gold dim_customers'[country]))",""
+"ARevUnit","DIVIDE([REVENUECNTRYA],[ATotalQuantity])",""
+"BRevUnit","DIVIDE([REVENUECNTRYB],[BTotalQuantity])",""
+"revenueperunit","DIVIDE([Total Revenue],SUM('gold fact_sales'[quantity]))",""
+"medianCategory","MEDIANX(VALUES('gold dim_products'[product_name]),[revenueperunit])",""
+"HigherValueQuantityA","VAR CategoryMedian= [medianCategory]
+VAR HighvaluedRows =
+    FILTER(
+        VALUES('gold dim_products'[product_name]),
+        [revenueperunit] > CategoryMedian
+    ) 
+RETURN  SUMX(HighvaluedRows,[ATotalQuantity])",""
+"HigherValueQuantityB","VAR categoryMedian =[medianCategory] 
+ var highvalue=
+    FILTER(
+        VALUES('gold dim_products'[product_name]),
+        [revenueperunit] >categoryMedian
+    ) 
+    RETURN SUMX(highvalue,[BTotalQuantity])
+",""
+"LowValueQuantityA","VAR categoryMedian=[medianCategory]
+ VAR LowValueRows=
+    FILTER(
+        VALUES('gold dim_products'[product_name]),
+        [revenueperunit] <= categoryMedian
+    )  RETURN  
+    SUMX(LowValueRows,[ATotalQuantity])
+",""
+"LowValueQuantityB","
+VAR categoryMedian =[medianCategory] 
+ var lowvalue=
+    FILTER(
+        VALUES('gold dim_products'[product_name]),
+        [revenueperunit] <=categoryMedian
+    ) 
+    RETURN SUMX(lowvalue,[BTotalQuantity])",""
+"Higher Value Comparison","
+SWITCH(
+    SELECTEDVALUE('Comparison Side'[Compare]),
+    ""Country A"", [HigherValueQuantityA],
+    ""Country B"", [HigherValueQuantityB]
+)",""
+"Lower Value Comparison","
+SWITCH(
+    SELECTEDVALUE('Comparison Side'[Compare]),
+    ""Country A"", [LowValueQuantityA],
+    ""Country B"", [LowValueQuantityB]
+)",""
+"Dynamic Comparison Title","
+VAR CountryA =
+    SELECTEDVALUE('Country A'[country])
+
+VAR CountryB =
+    SELECTEDVALUE('Country B'[country])
+
+VAR Category =
+    SELECTEDVALUE('gold dim_products'[category])
+
+RETURN
+    CountryA
+        & "" vs ""
+        & CountryB
+        & "" - Higher- vs Lower-Value ""
+        & Category
+        & "" Product Quantity Share Mix""",""
+"DynamicCOUNTRYATOPProductsB","VAR countryB=SELECTEDVALUE('Country B'[country]) 
+ RETURN countryB &"" - "" &""Top 10 Products by Revenue""",""
+"DynamicCOUNTRYATOPProductsA","VAR countryA=SELECTEDVALUE('Country A'[country]) 
+ RETURN countryA &""-"" &""Top 10 Products by Revenue.""",""
+"age","",""
+"Previous_Y_Reven","CALCULATE([Total Revenue],DATEADD(Date_table[Date],-1,YEAR))",""
+"YoY GROWTH","DIVIDE([Total Revenue]-[Previous_Y_Reven],[Previous_Y_Reven])",""
+"tital1visual1","SWITCH(
+    TRUE(),
+    ISINSCOPE(Date_table[Date]), ""Daily Revenue Trend"",
+    ISINSCOPE(Date_table[MONTHNAME]), ""Monthly Revenue Trend"",
+    ISINSCOPE(Date_table[year]), ""Annual Revenue Trend"",
+    ""Revenue Trend""
+)",""
+"Scope Test","
+""Year: "" &
+IF(ISINSCOPE(Date_table[year]), ""TRUE"", ""FALSE"")
+&
+"" | Month: "" &
+IF(ISINSCOPE(Date_table[MONTHNAME]), ""TRUE"", ""FALSE"")
+&
+"" | Date: "" &
+IF(ISINSCOPE(Date_table[Date]), ""TRUE"", ""FALSE"")",""
+"Product Bar Color","
+VAR ProductRank =
+    RANKX(
+        ALLSELECTED('gold dim_products'[product_name]),
+        [Total Revenue],
+        ,
+        DESC,
+        DENSE
+    )
+
+RETURN
+    SWITCH(
+        TRUE(),
+        ProductRank = 1, ""#4F6EF7"",
+        ""#A5B8F8""
+    )",""
+"Profit Margin %","
+DIVIDE([TOTAL PROFIT], [Total Revenue])",""
+"Country A Product Color","
+VAR CurrentRevenue =
+    [REVENUECNTRYA]
+
+VAR HighestRevenue =
+    MAXX(
+        ALLSELECTED('gold dim_products'[product_name]),
+        [REVENUECNTRYA]
+    )
+
+RETURN
+    IF(
+        NOT ISBLANK(CurrentRevenue)
+            && CurrentRevenue = HighestRevenue,
+        ""#263E91"",
+        ""#8294EA""
+    )",""
+"Country B Product Color","
+VAR CurrentRevenue =
+    [REVENUECNTRYB]
+
+VAR HighestRevenue =
+    MAXX(
+        ALLSELECTED('gold dim_products'[product_name]),
+        [REVENUECNTRYB]
+    )
+
+RETURN
+    IF(
+        NOT ISBLANK(CurrentRevenue)
+            && CurrentRevenue = HighestRevenue,
+        ""#263E91"",
+        ""#8294EA""
+    )",""
+"DynamiCOUNTRYA","VAR countryA=SELECTEDVALUE('Country A'[country]) 
+ RETURN countryA &"" """,""
+"DynamiCOUNTRYB","VAR countryB=SELECTEDVALUE('Country B'[country]) 
+ RETURN countryB &"" """,""
+"YoY Revenue Change","[Total Revenue]-[Previous_Y_Reven]",""
+"TotalUnitSold","SUM('gold fact_sales'[quantity])",""
