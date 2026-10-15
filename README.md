@@ -118,7 +118,7 @@ DATATABLE(
 ## 5. Dashboard walkthrough
 
 ### Page 1 — Sales Overview
-![Sales Overview](dashboard/screenshots/Sales Overview.png)
+![Sales Overview](dashboard/screenshots/Sales%20Overview.png)
 Executive KPIs, Top 10 Products by Revenue, AOV by Category, Top 10 Customers by Revenue, Top 10 Customers by Orders, and Top 10 Products by Profit Margin.
 
 ### Page 2 — Geographic Insights
